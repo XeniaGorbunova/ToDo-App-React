@@ -1,18 +1,22 @@
-import { useState } from "react";
+/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import { useState } from 'react'
+import { useTodoListMethodsContext } from '../../../contexts/TodoListContext'
 
-const Form = ({ addNewTodo }) => {
+function Form() {
+  const [input, setInput] = useState('')
 
-  const [ input, setInput ] = useState('');
+  const { addNewTodo } = useTodoListMethodsContext()
 
   const changeHandler = (e) => {
-    setInput(e.target.value);
+    setInput(e.target.value)
   }
 
   const submitHandler = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (input.length) {
-      addNewTodo(input);
-      setInput('');
+      addNewTodo(input)
+      setInput('')
     }
   }
   return (
@@ -28,4 +32,4 @@ const Form = ({ addNewTodo }) => {
   )
 }
 
-export default Form;
+export default Form

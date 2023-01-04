@@ -1,9 +1,13 @@
-const Footer = ({ clearAllTodos}) => {
-  return (
-    <footer>
-      <button onClick={clearAllTodos} type="button" className="btn btn-danger">Delete all</button>
-    </footer>
-  );
-};
+import { memo } from 'react'
+import { useTodoListMethodsContext } from '../../contexts/TodoListContext'
 
-export default Footer;
+const Footer = memo(() => {
+  const { clearAllTodos } = useTodoListMethodsContext()
+  return (
+    <footer className="d-flex justify-content-center">
+      <button onClick={clearAllTodos} type="button" className="btn btn-dark">Delete all</button>
+    </footer>
+  )
+})
+
+export default Footer
