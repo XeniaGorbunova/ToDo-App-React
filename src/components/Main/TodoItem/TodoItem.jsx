@@ -1,18 +1,26 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import { useEffect, useRef, useState } from 'react'
 import { useTodoListMethodsContext } from '../../../contexts/TodoListContext'
 import usePrevious from '../../../contexts/usePrevious'
+import Modal from '../../Modal/Modal'
+import DeleteTodoModal from './DeleteTodoModal'
 import styles from './todoItem.module.css'
 
 function TodoItem({
   title, id, index, completed,
 }) {
-  const { deleteTodo, changeStatusTodo, editTodo } = useTodoListMethodsContext()
+  const { changeStatusTodo, editTodo } = useTodoListMethodsContext()
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isEditing, setEditing] = useState(false)
   const [newTitle, setNewTitle] = useState('')
   const editFieldRef = useRef(null)
   const editButtonRef = useRef(null)
   const wasEditing = usePrevious(isEditing)
+
+  const openDeleteModalHandler = () => {
+    setIsDeleteModalOpen(true)
+  }
 
   useEffect(() => {
     if (!wasEditing && isEditing) {
@@ -22,10 +30,6 @@ function TodoItem({
       editButtonRef.current.focus()
     }
   }, [wasEditing, isEditing])
-
-  const deleteHandler = () => {
-    deleteTodo(id)
-  }
 
   const completeHandler = () => {
     changeStatusTodo(id)
@@ -93,6 +97,12 @@ function TodoItem({
           </div>
         </form>
       </div>
+      <DeleteTodoModal
+        isOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        title={title}
+        id={id}
+      />
       <div>
         <button
           onClick={completeHandler}
@@ -101,7 +111,7 @@ function TodoItem({
         >
           {completed ? 'Undone' : 'Done'}
         </button>
-        <button onClick={deleteHandler} type="button" className="btn btn-danger mx-2">Delete</button>
+        <button onClick={openDeleteModalHandler} type="button" className="btn btn-danger mx-2">Delete</button>
         <button
           onClick={() => setEditing(true)}
           ref={editButtonRef}
